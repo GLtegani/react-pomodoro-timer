@@ -11,12 +11,20 @@ import {
    MinutesAmountInput, 
 } from "./styles.ts" 
 
-export const Home = () => {
-   const {register, handleSubmit} = useForm()
+interface NewCycleFormData {
+   task: string
+   minutesAmount: number
+}
 
-   const handleCreateNewCycle = (data) => {
+export const Home = () => {
+   const {register, handleSubmit, watch} = useForm()
+
+   const handleCreateNewCycle = (data: NewCycleFormData) => {
 
    }
+
+   const task = watch('task')
+   const isSubmitDisabled = !task
 
    return (
       <HomeContainer>
@@ -45,7 +53,8 @@ export const Home = () => {
                   placeholder="00"
                   step={5}
                   max={60}
-                  {...register('minutesAmount')}
+                  min={0}
+                  {...register('minutesAmount', {valueAsNumber: true})}
                />
 
                <span>minutos.</span>
@@ -59,7 +68,7 @@ export const Home = () => {
                <span>0</span>
             </CountdownContainer>
 
-            <StartCountdownButton type="submit">
+            <StartCountdownButton disabled={isSubmitDisabled} type="submit">
                <Play size={24} />
                Começar
             </StartCountdownButton>
